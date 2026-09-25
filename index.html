@@ -28,20 +28,22 @@
   <button id="no" aria-label="Nein">NEIN</button>
 </main>
 <script>
-function say(word) {
-  if (!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(word);
-  u.lang = 'de-DE';
-  u.rate = 0.9;
-  u.pitch = 1.0;
-  const voices = speechSynthesis.getVoices();
-  const de = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('de'));
-  if (de) u.voice = de;
-  speechSynthesis.speak(u);
-}
-document.getElementById('yes').addEventListener('click', () => say('Ja!'));
-document.getElementById('no').addEventListener('click', () => say('Nein!'));
+  const jaAudio = new Audio('Ja.m4a');
+  const neinAudio = new Audio('Nein.m4a');
+
+  document.getElementById('yes').addEventListener('click', () => {
+    neinAudio.pause();
+    neinAudio.currentTime = 0;
+    jaAudio.currentTime = 0;
+    jaAudio.play();
+  });
+
+  document.getElementById('no').addEventListener('click', () => {
+    jaAudio.pause();
+    jaAudio.currentTime = 0;
+    neinAudio.currentTime = 0;
+    neinAudio.play();
+  });
 </script>
 </body>
 </html>

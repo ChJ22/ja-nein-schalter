@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>JA / NEIN</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin:0; width:100%; height:100%; overflow:hidden; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif; }
+  body { background:#111; padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom)); }
+  main { height:100%; display:grid; grid-template-rows:1fr 1fr; gap:10px; }
+  button {
+    border:0; border-radius:28px; color:white; font-size:clamp(64px,20vw,150px);
+    font-weight:900; letter-spacing:2px; text-shadow:0 3px 8px rgba(0,0,0,.25);
+    box-shadow:inset 0 -8px 0 rgba(0,0,0,.18), 0 4px 14px rgba(0,0,0,.35);
+    touch-action:manipulation;
+  }
+  button:active { transform:scale(.985); box-shadow:inset 0 4px 0 rgba(0,0,0,.18); }
+  #yes { background:#28a745; }
+  #no  { background:#dc3545; }
+</style>
+</head>
+<body>
+<main>
+  <button id="yes" aria-label="Ja">JA</button>
+  <button id="no" aria-label="Nein">NEIN</button>
+</main>
+<script>
+function say(word) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(word);
+  u.lang = 'de-DE';
+  u.rate = 0.9;
+  u.pitch = 1.0;
+  const voices = speechSynthesis.getVoices();
+  const de = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('de'));
+  if (de) u.voice = de;
+  speechSynthesis.speak(u);
+}
+document.getElementById('yes').addEventListener('click', () => say('Ja!'));
+document.getElementById('no').addEventListener('click', () => say('Nein!'));
+</script>
+</body>
+</html>
